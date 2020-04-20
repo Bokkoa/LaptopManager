@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -7,7 +7,7 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
 
         <!-- Styles -->
         <style>
@@ -65,18 +65,27 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
+            @if (Auth::check() && DB::table('users')->where('uid', \Auth::user()->samaccountname)->exists())
                 <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
+                        <a href="{{ url('index') }}">Admin section</a>
+                        <a href="{{ url('myrequests') }}">Mis requisiciones</a>
+                        <a href="{{ url('') }}">Nueva requisición</a>
+                        <!-- @if (Route::has('register'))
                             <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
+                        @endif -->
                 </div>
+            @else
+              @if (Auth::check())
+                <div class="top-right links">
+                  <a href="{{ route('logout') }}">Logout</a>
+                  <a href="{{ url('myrequests') }}">Mis requisiciones</a>
+                  <a href="{{ url('') }}">Nueva requisición</a>
+                </div>
+              @else
+              <div class="top-right links">
+                <a href="{{ route('login') }}">Login</a>
+              </div>
+              @endif
             @endif
 
             <div class="content">
@@ -85,13 +94,11 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
+                    <a href="https://laravel.com/docs">Documentation</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
                     <a href="https://nova.laravel.com">Nova</a>
                     <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>

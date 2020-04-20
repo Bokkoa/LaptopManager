@@ -14,7 +14,8 @@ class EntranceController extends Controller
      */
     public function index()
     {
-        //
+        $entrances = \App\Entrance::all();
+        echo json_encode($entrances);
     }
 
     /**
@@ -35,7 +36,14 @@ class EntranceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!\App\Entrance::where('hostname', $request['asset'])->exists())
+        {
+            $entrance = new \App\Entrance;
+            $entrance->name = $request['name'];
+            $entrance->location = $request['location'];
+            $entrance->hostname = $request['asset'];
+            $entrance->save();
+        }
     }
 
     /**
@@ -67,9 +75,13 @@ class EntranceController extends Controller
      * @param  \App\Entrance  $entrance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Entrance $entrance)
+    public function update(Request $request)
     {
-        //
+        $entrance = \App\Entrance::where('id', $request['id'])->first();
+        $entrance->name = $request['name'];
+        $entrance->hostname = $request['asset'];
+        $entrance->location = $request['location'];
+        $entrance->save();
     }
 
     /**
@@ -78,8 +90,8 @@ class EntranceController extends Controller
      * @param  \App\Entrance  $entrance
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Entrance $entrance)
+    public function destroy($id)
     {
-        //
+        $entrance = \App\Entrance::where('id', $id)->get()->each->delete();
     }
 }

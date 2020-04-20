@@ -15,6 +15,10 @@ class CreateEntrancesTable extends Migration
     {
         Schema::create('entrances', function (Blueprint $table) {
             $table->id();
+            
+            $table->string('hostname');
+            $table->string('name');
+            $table->string('location');
             $table->timestamps();
         });
     }

@@ -14,9 +14,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 });
 
+//VIEWS
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/scan', function () { return view('scan'); });
+Route::get('/entrance', function () { return view('entrances'); });
+Route::get('/event', function () { return view('events'); });
+Route::get('/laptop', function () { return view('laptops'); });
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//APIS
+Route::apiResource('/api/laptop', 'LaptopController');
+Route::apiResource('/api/asignation', 'AsignationController');
+Route::apiResource('/api/entrance', 'EntranceController');
+Route::apiResource('/api/event', 'EventController');
+Route::apiResource('/api/user', 'UserController');

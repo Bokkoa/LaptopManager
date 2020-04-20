@@ -14,7 +14,8 @@ class LaptopController extends Controller
      */
     public function index()
     {
-        //
+        $laptops = \App\Laptop::All();
+        echo json_encode($laptops);
     }
 
     /**
@@ -35,7 +36,19 @@ class LaptopController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(!\App\Laptop::where('asset', $request['asset'])->exists())
+        { 
+            $lap = new \App\Laptop;
+            $lap->asset = $request['asset'];
+            $lap->owner = $request['owner'];
+            $lap->creation_user = \Auth::user()->name;
+            $lap->created_at = date('Y-m-d');
+            $lap->save();
+        }
+        else
+        {
+            echo "Fail";
+        }
     }
 
     /**

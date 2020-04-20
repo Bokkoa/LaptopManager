@@ -25,4 +25,14 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function scan()
+    {
+        return view('scan');
+    }
+
+    public function entrance()
+    {
+        return view('entrances');
+    }
 }

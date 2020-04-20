@@ -16,11 +16,12 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('employee');
-            $table->string('asset');
             $table->string('uid');
-            $table->integer('entrance_id');
+            $table->string('asset');
 
+            $table->unsignedBigInteger('entrance_id');
             $table->foreign('entrance_id')->references('id')->on('entrances');
+            
             $table->timestamps();
         });
     }

@@ -1,0 +1,67 @@
+body{
+  background-color: rgba(199, 199, 199, 0.219);
+}
+ .bg-oxford{
+    background-color:  rgba(4, 11, 19, 0.623) !important;
+ }
+
+  .bg-dark{
+      background-color: #000000b6 !important;
+      opacity: 0.7;
+  }
+
+#phone-frame{
+    position:absolute; top: 0px; left: 0px; z-index: 1; 
+}
+
+#box{
+        border: 19px dotted #c905c6;
+        border-image-source: url("../img/phone-frame.png");
+        border-image-slice: 19; 
+}
+
+
+  #particles canvas{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -999;
+}
+
+
+/* ANIMATION PURE CSS FOR WAIT */
+
+.lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+  }
+  .lds-ripple div {
+    position: absolute;
+    border: 4px solid #cef;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  .lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  @keyframes lds-ripple {
+    0% {
+      top: 28px;
+      left: 28px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: -1px;
+      left: -1px;
+      width: 58px;
+      height: 58px;
+      opacity: 0;
+    }
+  }
+
+ 

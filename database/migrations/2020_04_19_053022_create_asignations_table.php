@@ -15,6 +15,16 @@ class CreateAsignationsTable extends Migration
     {
         Schema::create('asignations', function (Blueprint $table) {
             $table->id();
+            $table->string('employee_number');
+            $table->string('employee');
+            $table->string('uid')->nullable();
+
+            $table->unsignedBigInteger('laptop_id');
+            $table->foreign('laptop_id')->references('id')->on('laptops');
+            
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            
             $table->timestamps();
         });
     }

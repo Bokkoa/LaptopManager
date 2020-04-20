@@ -15,6 +15,9 @@ class CreateLaptopsTable extends Migration
     {
         Schema::create('laptops', function (Blueprint $table) {
             $table->id();
+            $table->string('asset')->unique();
+            $table->string('creation_user');
+            $table->string('owner');
             $table->timestamps();
         });
     }
