@@ -35,4 +35,11 @@ class HomeController extends Controller
     {
         return view('entrances');
     }
+
+    public function asignation()
+    {
+        return view('asignations');
+    }
+
+
 }

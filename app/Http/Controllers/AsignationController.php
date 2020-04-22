@@ -14,7 +14,14 @@ class AsignationController extends Controller
      */
     public function index()
     {
-        //
+        $a = \App\Asignation::all();
+
+        foreach($a as $r)
+        {
+            $r->laptop;
+        }
+
+        echo json_encode($a);
     }
 
     /**

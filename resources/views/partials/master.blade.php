@@ -29,8 +29,6 @@
   <link rel="stylesheet" href="js/chosen/patch.css">
   <link href="css/style.css" rel="stylesheet">
   <link rel="stylesheet" href="css/dataTables.bootstrap4.min.css">
-  <!-- <link rel="stylesheet" href="css/bootstrap4-retro.css"> -->
-  <link href="vendors/pace-progress/css/pace.min.css" rel="stylesheet">
   <link href="css/mycss.css" rel="stylesheet">
 
   <!-- IMAGES -->

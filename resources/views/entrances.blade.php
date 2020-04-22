@@ -30,10 +30,12 @@
 
               <div class="col-4">
                 <div class="form-group">
-                  <label for="asset">Localidad:</label>
+                  <label for="asset">Zona:</label>
                   <select name="location" id="location" class="form-control" required>
-                  <option value="1">Tijera</option>
-                  <option value="2">Periferico</option>
+                  <option value="1">Norte</option>
+                  <option value="2">Sur</option>
+                  <option value="3">Este</option>
+                  <option value="4">Oeste</option>
                   </select>
                 </div>
               </div>
@@ -112,8 +114,10 @@
               <div class="form-group">
                 <label for="modal-input-location">Localidad</label>
                 <select name="location" id="modal-input-location" class="form-control">
-                <option value="1">Tijera</option>
-                <option value="2">Periférico</option>
+                  <option value="1">Norte</option>
+                  <option value="2">Sur</option>
+                  <option value="3">Este</option>
+                  <option value="4">Oeste</option>
                 </select>
                 <!-- <input type="text" class="form-control" id="modal-input-location" name="location" required> -->
               </div>

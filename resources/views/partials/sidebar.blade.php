@@ -29,19 +29,19 @@
               </ul>
             </li>
 
-      <li class="nav-item">
-      <a class="nav-link" href="laptop">
+      <li class="nav-item nav-dropdown">
+      <a class="nav-link nav-dropdown-toggle" href="#">
           <i class="nav-icon fas fa-laptop"></i>Laptops</a>
-          <!-- <ul class="nav-dropdown-items">
+          <ul class="nav-dropdown-items">
               <li class="nav-item">
-                <a class="nav-link" href="laptops">
-                <i class="nav-icon fas fa-laptop-code"></i>Laptops Especiales</a>
-              </li> -->
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="adminasignations">
+                <a class="nav-link" href="laptop">
+                <i class="nav-icon fas fa-laptop-code"></i>Laptops</a>
+              </li> 
+              <li class="nav-item">
+                <a class="nav-link" href="asignations">
                 <i class="nav-icon fas fa-file-contract"></i>Asignaciones</a>
-              </li> -->
-          <!-- </ul> -->
+              </li> 
+            </ul>
           </li>
              
 
