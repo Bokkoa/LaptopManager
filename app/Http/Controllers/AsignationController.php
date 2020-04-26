@@ -14,14 +14,14 @@ class AsignationController extends Controller
      */
     public function index()
     {
-        $a = \App\Asignation::all();
+        $asignations = \App\Asignation::all();
 
-        foreach($a as $r)
+        foreach($asignation as $row)
         {
-            $r->laptop;
+            $row->laptop;
         }
 
-        echo json_encode($a);
+        echo json_encode($asignation);
     }
 
     /**
@@ -42,7 +42,26 @@ class AsignationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'employee_number' => 'required',
+            'employee' => 'required',
+            'uid' => 'required',
+            'laptop_id' => 'required',
+        ]);
+
+        if(!\App\Asignation::where('laptop_id', $request['laptop_id'])->exists())
+        {
+            $asignation = new \App\Asignation;
+            $asignation->employee_number = $request['employee_number'];
+            $asignation->employee = $request['employee'];
+            $asignation->uid = $request['uid'];
+            $asignation->laptop_id = $request['laptop_id'];
+
+            $asignation->user_id = \Auth::user()->id;
+        }
+        else{
+            echo "fail";
+        }
     }
 
     /**
@@ -74,9 +93,31 @@ class AsignationController extends Controller
      * @param  \App\Asignation  $asignation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Asignation $asignation)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'employee_number' => 'required',
+            'employee' => 'required',
+            'uid' => 'required',
+            'laptop_id' => 'required',
+        ]);
+
+        if(!\App\Asignation::where('laptop_id', $request['laptop_id'])
+                           ->where('id', '!=', $id)->exists())
+        {
+            $asignation = \App\Asignation::find($id);
+            $asignation->employee_number = $request['employee_number'];
+            $asignation->employee = $request['employee'];
+            $asignation->uid = $request['uid'];
+            $asignation->laptop_id = $request['laptop_id'];
+
+            $asignations->save();
+
+            echo \json_encode("success");
+        }
+
+        echo "fail";
+
     }
 
     /**
@@ -85,8 +126,8 @@ class AsignationController extends Controller
      * @param  \App\Asignation  $asignation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Asignation $asignation)
+    public function destroy($id)
     {
-        //
+        $asignation = \App\Asignation::where('id', $id)->get()->each->delete();
     }
 }

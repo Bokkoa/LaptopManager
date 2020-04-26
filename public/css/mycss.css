@@ -6,6 +6,11 @@
   background: #4787d1;
 }
 
+.bg-low-dark
+{
+  background-color: #2F353A;
+  color:white;
+}
 /*  HOVER EFFECT CUSTOM */
 
 .hovereffect {

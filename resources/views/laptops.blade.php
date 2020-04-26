@@ -7,7 +7,8 @@
      <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card shadow">
-          <div class="card-header">Laptops</div>
+          <div class="card-header bg-low-dark">Registrar Laptops</div>
+          <br>
           <form id="create" action="createlaptop" method="post" style="padding:5px;">
             @csrf
             <div class="row">
@@ -37,11 +38,12 @@
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card shadow">
-          <div class="card-header">Laptops</div>
+          <div class="card-header bg-low-dark">Laptops</div>
+          <br>
             <div class="col-12">
           <div class="table-responsive">
             <table id="datatable" class="table table-hover table-bordered table-sm text-center ">
-              <thead class="alert-warning">
+              <thead class="alert-info">
                 <tr>
                   <th><strong>#</strong></th>
                   <th><strong>Activo</strong></th>
@@ -68,14 +70,14 @@
 <div class="modal fade" id="edit-modal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-low-dark">
         <h4 class="modal-title" align="center"><b>Modificar activo</b></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form role="form" action="editlaptop" method="post" id="edit">
+        <form role="form" action="api/laptop" method="put" id="edit">
           <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
           <div class="box-body">
             <div class="form-group">
@@ -109,14 +111,14 @@
 <div class="modal fade" id="delete-modal">
 <div class="modal-dialog">
   <div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header bg-low-dark">
       <h4 class="modal-title" align="center"><b>Eliminar Activo</b></h4>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <form role="form" action="checklaptops" method="post" id="delete">
+      <form role="form" action="api/laptop" method="delete" id="delete">
 
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
@@ -124,72 +126,19 @@
           <div class="form-group">
             <label for="modal-input-asset-delete">Activo</label>
             <input type="hidden" name="id" id="modal-input-id-delete">
-            <input type="text" class="form-control" id="modal-input-asset-delete" name="asset" readonly>
+            <input type="text" class="form-control-plaintext" id="modal-input-asset-delete" name="asset" readonly>
           </div>
           <div class="form-group">
             <label for="modal-input-owner-delete">Usuario de creacion</label>
-            <input type="text" class="form-control" id="modal-input-owner-delete" name="owner" readonly>
+            <input type="text" class="form-control-plaintext" id="modal-input-owner-delete" name="owner" readonly>
           </div>
           <div class="form-group">
             <label for="modal-input-cuser-delete">Usuario de creacion</label>
-            <input type="text" class="form-control" id="modal-input-cuser-delete" name="cuser" readonly>
+            <input type="text" class="form-control-plaintext" id="modal-input-cuser-delete" name="cuser" readonly>
           </div>
           <div class="form-group">
             <label for="modal-input-cdate-delete">Fecha de creacion</label>
-            <input type="text" class="form-control" id="modal-input-cdate-delete" name="cdate" readonly>
-          </div>
-        </div>
-        <label><strong>¿Estás seguro de que deseas eliminar este registro?</strong></label>
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
-          <button id="btn-check" type="submit" class="btn btn-danger">Eliminar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- LINKED MODAL -->
-
-<div class="modal fade" id="linked-modal">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title" align="center"><b>Activos Vinculados</b></h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-    <div class="alert alert-warning">Las siguientes asignaciones serán eliminadas: </div>
-      
-      <!-- LIST OF USERS -->
-      <ul id="users" class="list-group"> 
-      </ul>
-      
-      <form role="form" action="deletelaptop" method="post" id="linked">
-
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
-        <div class="box-body">
-          <div class="form-group">
-            <label for="modal-input-asset-delete-2">Activo</label>
-            <input type="hidden" name="id" id="modal-input-id-delete-2">
-            <input type="text" class="form-control" id="modal-input-asset-delete-2" name="asset" readonly>
-          </div>
-          <div class="form-group">
-            <label for="modal-input-owner-delete-2">Usuario</label>
-            <input type="text" class="form-control" id="modal-input-owner-delete-2" name="owner" readonly>
-          </div>
-          <div class="form-group">
-            <label for="modal-input-cuser-delete-2">Usuario de creacion</label>
-            <input type="text" class="form-control" id="modal-input-cuser-delete-2" name="cuser" readonly>
-          </div>
-          <div class="form-group">
-            <label for="modal-input-cdate-delete-2">Fecha de creacion</label>
-            <input type="text" class="form-control" id="modal-input-cdate-delete-2" name="cdate" readonly>
+            <input type="text" class="form-control-plaintext" id="modal-input-cdate-delete" name="cdate" readonly>
           </div>
         </div>
         <label><strong>¿Estás seguro de que deseas eliminar este registro?</strong></label>

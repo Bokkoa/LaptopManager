@@ -36,6 +36,11 @@ class LaptopController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'owner' => 'required',
+            'asset' => 'required',
+        ]);
+
         if(!\App\Laptop::where('asset', $request['asset'])->exists())
         { 
             $lap = new \App\Laptop;
@@ -47,7 +52,7 @@ class LaptopController extends Controller
         }
         else
         {
-            echo "Fail";
+            echo "fail";
         }
     }
 
@@ -80,9 +85,27 @@ class LaptopController extends Controller
      * @param  \App\Laptop  $laptop
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Laptop $laptop)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'owner' => 'required',
+            'asset' => 'required',
+        ]);
+
+        if(!\App\Laptop::where('asset', $request['asset'])
+                       ->where('id', '!=', $id)->exists())
+        {
+            $laptop = \App\Laptop::find($id);
+
+            $laptop->owner = $request['owner'];
+            $laptop->asset = $request['asset'];
+
+            $laptop->save();
+
+            echo \json_encode("success");
+        }
+
+        echo "fail";
     }
 
     /**
@@ -91,8 +114,10 @@ class LaptopController extends Controller
      * @param  \App\Laptop  $laptop
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Laptop $laptop)
+    public function destroy($id)
     {
-        //
+        $laptop = \App\Laptop::Find($id);
+        $laptop->delete();
+        echo \json_encode("success");
     }
 }

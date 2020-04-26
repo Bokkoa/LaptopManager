@@ -4,7 +4,7 @@ function loadTable() {
         $("#datatable").DataTable();
         $("#datatable").DataTable().destroy();
 
-        table = $("#datatable").DataTable({
+        let table = $("#datatable").DataTable({
             "initComplete": function (settings, json) {
                 $("#datatable").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
             },
@@ -64,13 +64,14 @@ function loadTable() {
 
 
     } catch (e) {
+        console.log(e);
         swal("Hubo un error al procesar los datos del servidor", "Por favor intenta más tarde", "error");
 
     }
 }
 
 function refreshTable() {
-    var table = $("#datatable").DataTable();
+    let table = $("#datatable").DataTable();
     table.ajax.reload();
 }
 
@@ -95,7 +96,7 @@ $(document).ready(function () {
                 owner: $("#owner").val(),
             },
             success: function (data) {
-                if (data != "Fail") {
+                if (data != "fail") {
                     $('#create').trigger("reset");
                     VanillaToasts.create({
                         title: 'Registro realizado',
@@ -115,76 +116,26 @@ $(document).ready(function () {
                     });
                 }
 
-            }
-        });
-    });
-
-    $("form#delete").submit(function (e) {
-        e.preventDefault();
-        $('#delete-modal').modal('toggle');
-        $.ajax({
-            type: 'POST',
-            url: 'checklaptops',
-            data: $("form#delete").serialize(),
-            dataType: "json",
-            success: function (data) {
-
-                if (Object.keys(data).length > 0) {
-
-
-                    var listStr = "";
-                    $.each(data, function (k, v) {
-                        listStr += '<li class="list-group-item" >Codigo: ' + v.AS_Emp_Number + '  Nombre: ' + v.AS_Employee + '</li>';
-                    });
-                    $("#users").append(listStr);
-                    $("#linked-modal").modal();
-                }
-                else {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'deletelaptop',
-                        data: $("form#delete").serialize(),
-                        success: function (data) {
-                            VanillaToasts.create({
-                                title: 'Registro eliminado',
-                                text: ':)',
-                                type: 'success', // success, info, warning, error   / optional parameter
-                                timeout: 5000 // hide after 5000ms, // optional paremter
-                            });
-
-                            refreshTable();
-                        }
-                    });
-                }
-
             },
-            error: function () {
-                $.ajax({
-                    type: 'POST',
-                    url: 'deletelaptop',
-                    data: $("form#delete").serialize(),
-                    success: function (data) {
-                        VanillaToasts.create({
-                            title: 'Registro eliminado',
-                            text: ':)',
-                            type: 'success', // success, info, warning, error   / optional parameter
-                            timeout: 5000 // hide after 5000ms, // optional paremter
-                        });
-
-                        refreshTable();
-                        $('#linked-modal').modal('toggle');
-                    }
+            error: function(e){
+                VanillaToasts.create({
+                    title: 'Error en la peticion',
+                    text: ':(',
+                    type: 'error', // success, info, warning, error   / optional parameter
+                    timeout: 5000 // hide after 5000ms, // optional paremter
                 });
             }
         });
     });
-    $("form#linked").submit(function (e) {
-        e.preventDefault();
 
+
+    $("form#delete").submit(function (e) {
+        e.preventDefault();
+        let id = $("#modal-input-id-delete").val();
         $.ajax({
-            url: 'fulldeletelaptop',
-            type: "post",
-            data: $("form#linked").serialize(),
+            type: 'DELETE',
+            url: 'api/laptop/'+id,
+            data: $("form#delete").serialize(),
             success: function (data) {
                 VanillaToasts.create({
                     title: 'Registro eliminado',
@@ -194,21 +145,32 @@ $(document).ready(function () {
                 });
 
                 refreshTable();
+                $('#delete-modal').modal('toggle');
+            },
+            error: function(e){
+                VanillaToasts.create({
+                    title: 'Error en la peticion',
+                    text: ':(',
+                    type: 'error', // success, info, warning, error   / optional parameter
+                    timeout: 5000 // hide after 5000ms, // optional paremter
+                });
             }
         });
     });
 
     $("form#edit").submit(function (e) {
         e.preventDefault();
+        let id = $("#modal-input-id").val();
+
         $('#edit-modal').modal('toggle');
         $.ajax({
-            type: 'POST',
-            url: 'editlaptop',
+            type: 'PUT',
+            url: 'api/laptop/'+id,
             data: $("form#edit").serialize(),
             success: function (data) {
-                if (data != "Fail") {
+                if (data != "fail") {
                     VanillaToasts.create({
-                        title: 'Registro realizado',
+                        title: 'Registro modificado',
                         text: ':)',
                         type: 'success', // success, info, warning, error   / optional parameter
                         timeout: 5000 // hide after 5000ms, // optional paremter
@@ -224,11 +186,17 @@ $(document).ready(function () {
                         timeout: 5000 // hide after 5000ms, // optional paremter
                     });
                 }
+            },
+            error: function(e){
+                VanillaToasts.create({
+                    title: 'Error en la peticion',
+                    text: ':(',
+                    type: 'error', // success, info, warning, error   / optional parameter
+                    timeout: 5000 // hide after 5000ms, // optional paremter
+                });
             }
         });
     });
-
-
 
 
 
