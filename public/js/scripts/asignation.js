@@ -40,7 +40,7 @@ function filltable() {
                     }
                 },
                 {
-                    "data": "laptop.Lap_Asset",
+                    "data": "laptop.asset",
                     "createdCell": function (td, cellData, rowData, row, col) {
                         $(td).attr('id', 'laptop');
                     }
@@ -89,62 +89,36 @@ $(document).ready(function () {
     });
 
     filltable();
+
+    //API
     $("form#search").submit(function (e) {
         e.preventDefault();
         $.ajax({
             type: 'GET',
-            url: 'api/user',
+            url: 'https://reqres.in/api/users/'+ $("#employeenum").val(),
             dataType: 'json',
-            data: {
-                "_token": "{{ csrf_token() }}",
-                employeenum: $("#employeenum").val()
-            },
             success: function (data) {
 
-                $("#employee").val($("#employeenum").val());
+                console.log(data);
 
-                $("#name").val(data["FullName"]);
+                $("#employee").val(data.data.id);
 
-                $("#uid").val(data["WindowsUserId"]);
+                $("#name").val(data.data.first_name + ' ' + data.data.last_name);
 
+                $("#uid").val(data.data.email);
+
+                $("#employee-image").attr('src', data.data.avatar);
+                $("#modal-image").attr('src', data.data.avatar);
             }
         });
-
-
-        $.ajax({
-            type: 'GET',
-            url: 'get-image',
-            dataType: 'json',
-            data: {
-                // code: $("#employeenum").val()
-            },
-            success: function (data) {
-                $("#employee-image").attr('src', 'data:image/jpeg;base64,' + data);
-                $("#modal-image").attr('src', 'data:image/jpeg;base64,' + data);
-            },
-            error: function (response) {
-                var img_temporary = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Imagen_no_disponible.svg/1024px-Imagen_no_disponible.svg.png"
-
-                $("#employee-image").attr('src', img_temporary);
-                $("#modal-image").attr('src', img_temporary);
-
-                VanillaToasts.create({
-                    title: 'Imagen',
-                    text: 'No se encontro imagen',
-                    type: 'error', // success, info, warning, error   / optional parameter
-                    timeout: 3000 // hide after 5000ms, // optional parameter
-                });
-            }
-        });
+      
     });
 
+    //LAP SELECT
     $.ajax({
         type: 'GET',
-        url: 'api/laptop',
+        url: 'unused-laptops',
         datatype: 'json',
-        data: {
-            "_token": "{{ csrf_token() }}",
-        },
         success: function (data) {
             var strSelect = '';
             data = JSON.parse(data);
@@ -160,157 +134,101 @@ $(document).ready(function () {
     });
 
 
+    //POST
     $("form#create").submit(function (e) {
         e.preventDefault();
 
-        $.ajax({
-            type: 'GET',
-            url: 'checkforasignations',
-            data: {
-                "_token": "{{ csrf_token() }}",
-                employee: $("#employee").val(),
-                name: $("#name").val(),
-                uid: $("#uid").val(),
-                laptop: $("#laptop option:selected").val(),
-            },
-            dataType: "json",
-            success: function (data) {
+            $.ajax({
+                type: 'POST',
+                url: 'api/asignation',
+                data: {
+                    employee_number: $("#employee").val(),
+                    employee: $("#name").val(),
+                    uid: $("#uid").val(),
+                    laptop_id: $("#laptop").val(),
+                },
+                dataType: "JSON",
+                success: function (response) {
 
-                var userLists = "";
-                $.each(data, function (k, v) {
-                    userLists += '<li class="list-group-item">Numero: ' + v.AS_Emp_Number + '  Nombre: ' + v.AS_Employee + '</li>';
-                });
-                $("#user-list").append(userLists);
-                $("#modal-input-name-exists").val($("#employee").val());
-                $("#modal-input-employee-exists").val($("#name").val());
-                $("#modal-input-uid-exists").val($("#uid").val());
-                $("#modal-input-laptop-exists").val($("#laptop option:selected").val());
-                $("#asset-exists").text($("#laptop option:selected").text());
-                $('#exists-modal').modal();
+                    if (response.status === 200) {
 
-            },
-            error: function () {
-                $.ajax({
-                    type: 'POST',
-                    url: 'createasignation',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        employee: $("#employee").val(),
-                        name: $("#name").val(),
-                        uid: $("#uid").val(),
-                        laptop: $("#laptop").val(),
-                    },
-                    success: function (data) {
-                        if (data != "Fail") {
+                        VanillaToasts.create({
+                            title: 'Registro realizado',
+                            text: `Usuario de vinculacion: ${response.data.employee}`,
+                            type: 'success', // success, info, warning, error   / optional parameter
+                            timeout: 5000 // hide after 5000ms, // optional paremter
+                        });
+                        refreshTable();
+                        $('#create').trigger("reset");
+                        $('#employee-image').attr('src', '');
+                        $("#modal-image").attr('src', '');
 
-                            VanillaToasts.create({
-                                title: 'Registro realizado',
-                                text: ':)',
-                                type: 'success', // success, info, warning, error   / optional parameter
-                                timeout: 5000 // hide after 5000ms, // optional paremter
-                            });
-                            refreshTable();
-                            $('#create').trigger("reset");
-                            $('#employee-image').attr('src', '');
-                            $("#modal-image").attr('src', '');
-
-                        }
-                        else {
-                            $("#datatable").dataTable().fnClearTable();
-                            VanillaToasts.create({
-                                title: 'Activo ya asignado',
-                                text: ':(',
-                                type: 'error', // success, info, warning, error   / optional parameter
-                                timeout: 5000 // hide after 5000ms, // optional paremter
-                            });
-                            refreshTable();
-                            $('#create').trigger("reset");
-                            $('#employee-image').attr('src', '');
-                            $("#modal-image").attr('src', '');
-                        }
                     }
-                });
-            }
-
-        });
-
-    });
-
-
-
-    $("form#create2").submit(function (e) {
-        e.preventDefault();
-
-        // $("#modal-input-name-exists").val($("#name").val());
-        //         $("#modal-input-employee-exists").val($("#employee").val());
-        //         $("#modal-input-uid-exists").val($("#uid").val());
-        //         $("#modal-input-laptop-exists").val($("#laptop option:selected").val());
-
-        $.ajax({
-            type: 'POST',
-            url: 'createasignation',
-            data: {
-                "_token": "{{ csrf_token() }}",
-                name: $("#modal-input-employee-exists").val(),
-                employee: $("#modal-input-name-exists").val(),
-                uid: $("#modal-input-uid-exists").val(),
-                laptop: $("#modal-input-laptop-exists").val(),
-            },
-            success: function (data) {
-                if (data != "Fail") {
-                    $('#exists-modal').modal('toggle');
-                    $("#datatable").dataTable().fnClearTable();
+                    else{
+                        $("#datatable").dataTable().fnClearTable();
+                        VanillaToasts.create({
+                            title: 'Activo ya asignado',
+                            text: ':(',
+                            type: 'error', // success, info, warning, error   / optional parameter
+                            timeout: 5000 // hide after 5000ms, // optional paremter
+                        });
+                        refreshTable();
+                        $('#create').trigger("reset");
+                        $('#employee-image').attr('src', '');
+                        $("#modal-image").attr('src', '');
+                    }
+                  
+                },
+                error: function(error){
+                    console.log(error);
                     VanillaToasts.create({
-                        title: 'Registro realizado',
-                        text: ':)',
-                        type: 'success', // success, info, warning, error   / optional parameter
-                        timeout: 5000 // hide after 5000ms, // optional paremter
-                    });
-                    refreshTable();
-                    $('#create').trigger("reset");
-                    $('#employee-image').attr('src', '');
-                    $("#modal-image").attr('src', '');
-
-                }
-                else {
-                    $("#datatable").dataTable().fnClearTable();
-                    VanillaToasts.create({
-                        title: 'Activo ya asignado',
+                        title: 'Algo falló en la petición',
                         text: ':(',
                         type: 'error', // success, info, warning, error   / optional parameter
                         timeout: 5000 // hide after 5000ms, // optional paremter
                     });
-                    refreshTable();
-                    $('#create').trigger("reset");
-                    $('#employee-image').attr('src', '');
-                    $("#modal-image").attr('src', '');
                 }
-            }
-        });
+            });
+
 
     });
 
 
+    //UPDATE
     $("form#edit").submit(function (e) {
         e.preventDefault();
+        let id = $("#modal-input-id").val();
         $.ajax({
-            type: 'POST',
-            url: 'editasignation',
+            type: 'PUT',
+            url: 'api/asignation/' + id,
             data: {
-                "_token": "{{ csrf_token() }}",
-                id: $("#modal-input-id").val(),
+                id: id,
                 employee: $("#modal-input-employee").val(),
                 name: $("#modal-input-name").val(),
                 uid: $("#modal-input-uid").val(),
                 laptop: $("#modal-input-laptop").val(),
             },
-            success: function (data) {
-                if (data != "Fail") {
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.status === 200) {
                     $("#datatable").dataTable().fnClearTable();
                     VanillaToasts.create({
                         title: 'Registro modificado',
                         text: ':)',
                         type: 'success', // success, info, warning, error   / optional parameter
+                        timeout: 5000 // hide after 5000ms, // optional paremter
+                    });
+                    refreshTable();
+                    $('#create').trigger("reset");
+                    $('#employee-image').attr('src', '');
+                    $("#modal-image").attr('src', '');
+                }
+                else if(response.status == 500){
+                    $("#datatable").dataTable().fnClearTable();
+                    VanillaToasts.create({
+                        title: response.message,
+                        text: ':(',
+                        type: 'error', // success, info, warning, error   / optional parameter
                         timeout: 5000 // hide after 5000ms, // optional paremter
                     });
                     refreshTable();
@@ -333,6 +251,17 @@ $(document).ready(function () {
                 }
 
                 $('#edit-modal').modal('toggle');
+            },
+            error: function(error){
+
+                VanillaToasts.create({
+                    title: 'No existe el activo escrito',
+                    text: ':(',
+                    type: 'error', // success, info, warning, error   / optional parameter
+                    timeout: 5000 // hide after 5000ms, // optional paremter
+                });
+                $('#edit-modal').modal('toggle');
+              
             }
         });
     });
@@ -340,19 +269,13 @@ $(document).ready(function () {
 
     $("form#delete").submit(function (e) {
         e.preventDefault();
+        var asignationId =  $("#modal-input-id-delete").val();
         $.ajax({
-            type: 'POST',
-            url: 'deleteasignation',
-            data: {
-                "_token": "{{ csrf_token() }}",
-                id: $("#modal-input-id-delete").val(),
-                employee: $("#modal-input-employee-delete").val(),
-                name: $("#modal-input-name-delete").val(),
-                uid: $("#modal-input-uid-delete").val(),
-                laptop: $("#modal-input-laptop-delete").val(),
-            },
-            success: function (data) {
-                if (data != "Fail") {
+            type: 'DELETE',
+            url: 'api/asignation/'+ asignationId,
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.status === 200) {
                     $("#datatable").dataTable().fnClearTable();
                     VanillaToasts.create({
                         title: 'Registro eliminado',
@@ -368,8 +291,8 @@ $(document).ready(function () {
                 else {
                     $("#datatable").dataTable().fnClearTable();
                     VanillaToasts.create({
-                        title: 'Este letrero no deberia mostrarse',
-                        text: ':(',
+                        title: 'Error al eliminar',
+                        text: 'Asegurate de que el registro exista :(',
                         type: 'error', // success, info, warning, error   / optional parameter
                         timeout: 5000 // hide after 5000ms, // optional paremter
                     });

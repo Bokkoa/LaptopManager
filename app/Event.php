@@ -11,7 +11,7 @@ class Event extends Model
     protected $primaryKey = "id";
 
     protected $fillable = [
-        'employee', 'uid', 'asset', 'entrance_id',
+        'id','employee', 'uid', 'asset', 'entrance_id',
         'created_at', 'updated_at'
     ];
 

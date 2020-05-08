@@ -13,9 +13,9 @@ class LaptopController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $laptops = \App\Laptop::All();
-        echo json_encode($laptops);
+    {  
+            $laptops = \App\Laptop::All();
+            echo json_encode($laptops);
     }
 
     /**
@@ -64,7 +64,6 @@ class LaptopController extends Controller
      */
     public function show(Laptop $laptop)
     {
-        //
     }
 
     /**

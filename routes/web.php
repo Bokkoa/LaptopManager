@@ -35,3 +35,4 @@ Route::apiResource('/api/user', 'UserController');
 
 //Auxiliar
 Route::get('/get-image', 'AuxiliarController@exampleImage');
+Route::get('/unused-laptops', 'AuxiliarController@laptopsOnAsignations');

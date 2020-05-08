@@ -16,12 +16,12 @@ class AsignationController extends Controller
     {
         $asignations = \App\Asignation::all();
 
-        foreach($asignation as $row)
+        foreach($asignations as $row)
         {
             $row->laptop;
         }
 
-        echo json_encode($asignation);
+        echo json_encode($asignations);
     }
 
     /**
@@ -58,9 +58,23 @@ class AsignationController extends Controller
             $asignation->laptop_id = $request['laptop_id'];
 
             $asignation->user_id = \Auth::user()->id;
+
+            $asignation->save();
+
+            $response = Array(
+                'status' => 200,
+                'data' => $asignation
+            );
+
+            echo json_encode($response);
         }
         else{
-            echo "fail";
+            $response = Array(
+                'status' => 500,
+                'message' => "El registro ya existe"
+            );
+
+            echo json_encode($response);
         }
     }
 
@@ -96,27 +110,53 @@ class AsignationController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'employee_number' => 'required',
             'employee' => 'required',
             'uid' => 'required',
-            'laptop_id' => 'required',
+            'laptop_asset' => 'required',
         ]);
 
-        if(!\App\Asignation::where('laptop_id', $request['laptop_id'])
-                           ->where('id', '!=', $id)->exists())
+        $laptopId = \App\Laptop::where('asset', 'EC00')->pluck('id');
+       
+        if(!$laptopId->isEmpty())
         {
-            $asignation = \App\Asignation::find($id);
-            $asignation->employee_number = $request['employee_number'];
-            $asignation->employee = $request['employee'];
-            $asignation->uid = $request['uid'];
-            $asignation->laptop_id = $request['laptop_id'];
+            
+            if(!\App\Asignation::where('laptop_id', $laptopId)
+            ->where('id', '!=', $id)->exists())
+            {
+                $asignation = \App\Asignation::find($id);
+                $asignation->employee = $request['employee'];
+                $asignation->uid = $request['uid'];
+                $asignation->laptop_id = $laptopId;
+                
+                $asignation->save();
+               
+                $response = Array(
+                    "status" => 200,
+                    "data" => $asignation
+                );
 
-            $asignations->save();
+                echo \json_encode($response);
+            }
+            else{
 
-            echo \json_encode("success");
+                $response = Array(
+                    "status" => 500,
+                    "message" => 'La laptop ya está siendo ocupada'
+                );
+
+                echo \json_encode($response);
+
+            }
+        }
+        else{
+            $response = Array(
+                "status" => 404,
+                "message" => 'No hay laptop con ese id'
+            );
+
+            echo \json_encode($response);
         }
 
-        echo "fail";
 
     }
 
@@ -128,6 +168,20 @@ class AsignationController extends Controller
      */
     public function destroy($id)
     {
-        $asignation = \App\Asignation::where('id', $id)->get()->each->delete();
+        try{
+            $asignation = \App\Asignation::where('id', $id)->get()->each->delete();
+            $response = Array(
+                "status" => 200,
+            );
+            echo json_encode($response);
+
+        }catch(Error $error){
+            
+            $response = Array(
+                "status" => 500,
+            );
+            echo json_encode($response);
+        }
+
     }
 }

@@ -129,13 +129,13 @@
 <div class="modal fade " id="img-modal">
   <div class="modal-dialog ">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-laptop">
         <h4 class="modal-title" align="center"><b>Imagen</b></h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close btn-laptop" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body text-center">
         <img id="modal-image" class="img-thumbnail" src="" alt="">
       </div>
     </div>

@@ -12,7 +12,7 @@ class Asignation extends Model
 
     protected $fillable = [
         'employee_number', 'employee', 'uid', 'laptop_id', 'user_id',
-        'created_at', 'updated_at'
+        'created_at', 'updated_at', 'id'
     ];
     public function laptop()
     {                                       //FK            //PK

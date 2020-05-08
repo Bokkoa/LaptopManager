@@ -7,7 +7,7 @@
     <div class="animated fadeIn">
           <div class="row justify-content-center" style="margin-top: 24px;">
               <div class="col-md-12">
-                  <div class="card">
+                  <div class="card shadow">
                       <div class="card-header">Dashboard</div>
 
                       <div class="card-body">

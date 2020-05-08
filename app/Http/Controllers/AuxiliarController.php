@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Laptop;
 use Illuminate\Http\Request;
 
 class AuxiliarController extends Controller
@@ -11,6 +12,12 @@ class AuxiliarController extends Controller
         // $image = base64_encode($binaryImage->Image);
         // echo json_encode($image);
         echo json_encode($binaryImage);
+    }
+
+    public function laptopsOnAsignations(Request $request){
+        $laptops = \App\Laptop::doesntHave('asignation')->get();
+        echo json_encode($laptops);
+
     }
 }
 ?>

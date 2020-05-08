@@ -11,6 +11,6 @@ class Entrance extends Model
     protected $primaryKey = "id";
 
     protected $fillable = [
-        'hostname', 'name', 'location', 'created_at', 'updated_at'
+        'id','hostname', 'name', 'location', 'created_at', 'updated_at'
     ];
 }
