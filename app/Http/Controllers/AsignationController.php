@@ -84,9 +84,31 @@ class AsignationController extends Controller
      * @param  \App\Asignation  $asignation
      * @return \Illuminate\Http\Response
      */
-    public function show(Asignation $asignation)
+    public function show($asset)
     {
-        //
+        
+        $asignation = \App\Asignation::with('user')
+        ->with('laptop')->whereHas('laptop', function ($query) use ($asset){
+            $query->where('asset', $asset);
+        })->get();
+        
+        if(!$asignation->isEmpty()){
+
+            $response = Array(
+                "status" => "200",
+                "data" => $asignation
+            );
+
+            echo \json_encode($response);
+
+        }else{
+            $response = Array(
+                "status" => "404",
+                "message" => "No se encontró el registro"
+            );
+
+            echo \json_encode($response);
+        }
     }
 
     /**

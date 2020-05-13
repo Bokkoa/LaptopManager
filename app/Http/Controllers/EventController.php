@@ -14,7 +14,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        $events = \App\Events::all();
+        echo \json_encode($events);
     }
 
     /**
@@ -35,7 +36,24 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = new \App\Event;
+        if(\App\Entrance::where("hostname", $request['entrance'])->exists()){
+            
+            
+            $event->entrance_id = \App\Entrance::where("hostname", $request['entrance'])->value('id');   
+
+        }else{
+            $event->entrance_id = 0;
+        }
+
+        $event->asset = $request['asset'];
+        $event->employee = $request['employee'];
+        $event->uid = $request['uid'];
+
+        $event->save();
+
+        return "success";
+        
     }
 
     /**

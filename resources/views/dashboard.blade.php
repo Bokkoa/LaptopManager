@@ -17,8 +17,8 @@
                               </div>
                           @endif
                           You are logged in!
+                          {{ var_dump(session('name')) }} 
                       </div>
-                          {{ session('name') }} 
                   </div>
               </div>
           </div>

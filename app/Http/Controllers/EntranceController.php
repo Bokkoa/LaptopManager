@@ -52,9 +52,27 @@ class EntranceController extends Controller
      * @param  \App\Entrance  $entrance
      * @return \Illuminate\Http\Response
      */
-    public function show(Entrance $entrance)
+    public function show($id)
     {
-        //
+        $entrance = \App\Entrance::find($id);
+        
+        if(!empty($entrance)){
+
+            $response = Array(
+                "status" => "200",
+                "data" => $entrance
+            );
+
+            echo \json_encode($response);
+
+        }else{
+            $response = Array(
+                "status" => "404",
+                "message" => "No se encontró el registro"
+            );
+
+            echo \json_encode($response);
+        }
     }
 
     /**

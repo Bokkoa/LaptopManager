@@ -7,7 +7,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Laptop Manager</title>
 		
-		
+        <!-- CSRF -->
+        <meta name="_token" content="{{ csrf_token() }}">
+
+
 		<!--==================================================================
 			CSS Stylesheets
 		==================================================================-->
@@ -23,9 +26,18 @@
 
         <script src="js/sweetalert.min.js"></script>
        
-		
+        <style>
+            .scanimage{
+                margin-top: 10px;
+                border: 2px solid white;
+                border-radius: 9px;
+                flex:0 1 auto;
+                align-self:center;
+                width: 250px;
+            }
+        </style>
     </head>
-	<body class="bg-dark">
+	<body class="bg-neural">
 
     <div class="se-pre-con"></div>
     
@@ -39,7 +51,7 @@
         <div id="particles"></div>
         <header>
             <nav class="navbar navbar-dark bg-dark" >
-                  <a class="navbar-brand" href="/">Access</a>
+                  <a class="navbar-brand" href="/">Access</a> on  <span id="entrancehost">@php echo gethostname()  @endphp </span>
              </nav>
         </header>
         <br>
@@ -90,16 +102,17 @@
                                     </div>
                                     
                                     
-                                    
                                 </div>
                             </div>
                         </div>
-                        <div class="col-7 card-deck justify-content-center imgs-section">
-                            <div id="first" class="card">
-                              <img width="40%" id="employee-image" class="shadow-lg rounded " src="">
-                            </div>
-                        </div>
                     </div>  
+                        
+                            <div class="col-12 card-deck justify-content-center imgs-section ">
+                                <div id="first" class="card text-center">
+                                    <img width="40%" id="employee-image" class="shadow-lg rounded scanimage" src="">
+                                </div>
+                            </div>
+                        
 
                 </div>
             </main>

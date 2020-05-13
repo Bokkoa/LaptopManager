@@ -13,26 +13,38 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
+
+
+Route::get('/test', function () {
+    return gethostname();
 });
 
-//VIEWS
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/scan', function () { return view('scan'); });
-Route::get('/entrance', function () { return view('entrances'); });
-Route::get('/event', function () { return view('events'); });
-Route::get('/laptop', function () { return view('laptops'); });
-Route::get('/asignations', function () { return view('asignations'); });
+Route::get('/scan', function () { return view('scan'); })->middleware('entrance');
+
 Auth::routes();
 
-//APIS
-Route::apiResource('/api/laptop', 'LaptopController');
-Route::apiResource('/api/asignation', 'AsignationController');
-Route::apiResource('/api/entrance', 'EntranceController');
-Route::apiResource('/api/event', 'EventController');
-Route::apiResource('/api/user', 'UserController');
+Route::middleware('auth')->group(function () {
+    
+    Route::get('/', function () {
+        return view('dashboard');
+    });
 
-//Auxiliar
-Route::get('/get-image', 'AuxiliarController@exampleImage');
-Route::get('/unused-laptops', 'AuxiliarController@laptopsOnAsignations');
+    //VIEWS
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/entrance', function () { return view('entrances'); });
+    Route::get('/event', function () { return view('events'); });
+    Route::get('/laptop', function () { return view('laptops'); });
+    Route::get('/asignations', function () { return view('asignations'); });
+
+    //APIS
+    Route::apiResource('/api/laptop', 'LaptopController');
+    Route::apiResource('/api/asignation', 'AsignationController');
+    Route::apiResource('/api/entrance', 'EntranceController');
+    Route::apiResource('/api/event', 'EventController');
+    Route::apiResource('/api/user', 'UserController');
+
+    //Auxiliar
+    Route::get('/get-image', 'AuxiliarController@exampleImage');
+    Route::get('/unused-laptops', 'AuxiliarController@laptopsOnAsignations');
+  
+});
