@@ -14,7 +14,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = \App\Events::all();
+        $events = \App\Event::with('entrance')->paginate(15);
+
         echo \json_encode($events);
     }
 

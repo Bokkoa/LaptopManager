@@ -137,7 +137,7 @@ class AsignationController extends Controller
             'laptop_asset' => 'required',
         ]);
 
-        $laptopId = \App\Laptop::where('asset', 'EC00')->pluck('id');
+        $laptopId = \App\Laptop::where('asset', $request->laptop_asset)->pluck('id');
        
         if(!$laptopId->isEmpty())
         {

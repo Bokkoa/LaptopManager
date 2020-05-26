@@ -14,9 +14,6 @@ body{
   /* background-color: #083b4af0 !important; */
   background-color: #064e64f0 !important;
 }
-#phone-frame{
-    position:absolute; top: 0px; left: 0px; z-index: 1; 
-}
 
 #box{
         border: 19px dotted #c905c6;

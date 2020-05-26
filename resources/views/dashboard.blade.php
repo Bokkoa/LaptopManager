@@ -17,7 +17,7 @@
                               </div>
                           @endif
                           You are logged in!
-                          {{ var_dump(session('name')) }} 
+                          {{ Auth::user()->name }} 
                       </div>
                   </div>
               </div>
